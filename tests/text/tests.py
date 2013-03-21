@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase
-from django.utils.encoding import iri_to_uri
+from django.utils.encoding import iri_to_uri, filepath_to_uri
 from django.utils.http import (cookie_date, http_date,
     urlquote, urlquote_plus, urlunquote, urlunquote_plus)
 from django.utils.text import get_text_list, smart_split
@@ -103,3 +103,9 @@ class TextTests(TestCase):
     def test_iri_to_uri_idempotent(self):
         self.assertEqual(iri_to_uri(iri_to_uri('red%09ros\xe9#red')),
             'red%09ros%C3%A9#red')
+
+    def test_filepath_to_uri(self):
+        self.assertEqual(filepath_to_uri('upload\\чубака.mp4'),
+            'upload/%D1%87%D1%83%D0%B1%D0%B0%D0%BA%D0%B0.mp4')
+        self.assertEqual(filepath_to_uri(b'upload\\чубака.mp4'),
+            b'upload/%D1%87%D1%83%D0%B1%D0%B0%D0%BA%D0%B0.mp4')
